@@ -14,7 +14,7 @@ namespace CosmosDBBinding.Step5
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-            
+
             builder.AddExtension<CosmosDBBindingConfigProvider>();
 
             builder.Services.AddSingleton<ICosmosDBBindingCollectorFactory, CosmosDBBindingCollectorFactory>();

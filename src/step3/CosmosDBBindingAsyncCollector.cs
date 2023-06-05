@@ -9,14 +9,14 @@ using Newtonsoft.Json.Linq;
 
 namespace CosmosDBBinding.Step3
 {
-    public class CosmosDBBindingAsyncCollector<T>: IAsyncCollector<T>
+    public class CosmosDBBindingAsyncCollector<T> : IAsyncCollector<T>
     {
         private CosmosDBBindingContext cosmosContext;
 
         public CosmosDBBindingAsyncCollector(CosmosDBBindingContext cosmosContext) => this.cosmosContext = cosmosContext;
 
         public async Task AddAsync(
-            T item, 
+            T item,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (item == null)
@@ -24,7 +24,7 @@ namespace CosmosDBBinding.Step3
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (this.cosmosContext.ResolvedAttribute.CreateIfNotExists) 
+            if (this.cosmosContext.ResolvedAttribute.CreateIfNotExists)
             {
                 await InitializeContainer(this.cosmosContext);
             }
@@ -46,14 +46,16 @@ namespace CosmosDBBinding.Step3
                 await context.CosmosClient.CreateDatabaseAsync(context.ResolvedAttribute.DatabaseName);
             }
 
-            ContainerResponse containerResponse = await context.CosmosClient.GetContainer(context.ResolvedAttribute.DatabaseName, context.ResolvedAttribute.ContainerName).ReadAsync();
-            if (containerResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                await context.CosmosClient.GetDatabase(context.ResolvedAttribute.DatabaseName).CreateContainerAsync(
-                    new CosmosContainerSettings(context.ResolvedAttribute.ContainerName, context.ResolvedAttribute.PartitionKey),
-                    context.ResolvedAttribute.ContainerThroughput
-                );
-            }
+            // ContainerResponse containerResponse = await context.CosmosClient.GetContainer(context.ResolvedAttribute.DatabaseName, context.ResolvedAttribute.ContainerName).ReadContainerAsync();
+            // if (containerResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+            // {
+            //     await context.CosmosClient.GetDatabase(context.ResolvedAttribute.DatabaseName).CreateContainerAsync(
+            //         new CosmosContainerSettings(context.ResolvedAttribute.ContainerName, context.ResolvedAttribute.PartitionKey),
+            //         context.ResolvedAttribute.ContainerThroughput
+            //     );
+            // }
+
+
         }
 
         private static async Task UpsertDocument(CosmosDBBindingContext context, T item)

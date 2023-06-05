@@ -11,7 +11,7 @@ namespace CosmosDBBinding.Sample
     {
         [FunctionName("CosmosDBSample")]
         public static async Task Run(
-            [TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, 
+            [TimerTrigger("*/5 * * * * *")] TimerInfo myTimer,
             [CosmosDB("%CosmosDBDatabase%", "%CosmosDBContainer%", ConnectionStringSetting = "CosmosDBConnectionString")] IAsyncCollector<MyClass> CosmosDBCollector,
             ILogger log)
         {
