@@ -1,5 +1,4 @@
 using CosmosDBBinding.Step1;
-using Microsoft.Azure.Cosmos;
 
 namespace CosmosDBBinding.Step3
 {
@@ -7,6 +6,6 @@ namespace CosmosDBBinding.Step3
     {
         public CosmosDBAttribute ResolvedAttribute { get; set; }
 
-        public CosmosClient CosmosClient { get; set; }
+        public string FullString { get; set; }
     }
 }

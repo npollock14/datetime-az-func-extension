@@ -24,12 +24,9 @@ namespace CosmosDBBinding.Step3
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (this.cosmosContext.ResolvedAttribute.CreateIfNotExists)
-            {
-                await InitializeContainer(this.cosmosContext);
-            }
 
-            await UpsertDocument(this.cosmosContext, item);
+
+            // await UpsertDocument(this.cosmosContext, item);
         }
 
         public Task FlushAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -38,39 +35,21 @@ namespace CosmosDBBinding.Step3
             return Task.FromResult(0);
         }
 
-        private static async Task InitializeContainer(CosmosDBBindingContext context)
-        {
-            DatabaseResponse databaseResponse = await context.CosmosClient.GetDatabase(context.ResolvedAttribute.DatabaseName).ReadAsync();
-            if (databaseResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                await context.CosmosClient.CreateDatabaseAsync(context.ResolvedAttribute.DatabaseName);
-            }
 
-            // ContainerResponse containerResponse = await context.CosmosClient.GetContainer(context.ResolvedAttribute.DatabaseName, context.ResolvedAttribute.ContainerName).ReadContainerAsync();
-            // if (containerResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-            // {
-            //     await context.CosmosClient.GetDatabase(context.ResolvedAttribute.DatabaseName).CreateContainerAsync(
-            //         new CosmosContainerSettings(context.ResolvedAttribute.ContainerName, context.ResolvedAttribute.PartitionKey),
-            //         context.ResolvedAttribute.ContainerThroughput
-            //     );
-            // }
-
-
-        }
 
         private static async Task UpsertDocument(CosmosDBBindingContext context, T item)
         {
-            // DocumentClient does not accept strings directly.
-            object convertedItem = item;
-            if (item is string)
-            {
-                convertedItem = JObject.Parse(item.ToString());
-            }
+            // // DocumentClient does not accept strings directly.
+            // object convertedItem = item;
+            // if (item is string)
+            // {
+            //     convertedItem = JObject.Parse(item.ToString());
+            // }
 
-            await context.CosmosClient
-                .GetContainer(context.ResolvedAttribute.DatabaseName,
-                context.ResolvedAttribute.ContainerName)
-                .UpsertItemAsync<T>(item);
+            // await context.CosmosClient
+            //     .GetContainer(context.ResolvedAttribute.DatabaseName,
+            //     context.ResolvedAttribute.ContainerName)
+            //     .UpsertItemAsync<T>(item);
         }
     }
 }

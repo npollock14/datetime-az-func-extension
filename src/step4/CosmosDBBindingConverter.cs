@@ -4,7 +4,7 @@ using Microsoft.Azure.WebJobs;
 
 namespace CosmosDBBinding.Step4
 {
-    internal class CosmosDBBindingConverter<T> : IConverter<CosmosDBAttribute, IAsyncCollector<T>>
+    public class CosmosDBBindingConverter : IConverter<CosmosDBAttribute, string>
     {
         private readonly CosmosDBBindingConfigProvider configProvider;
 
@@ -13,10 +13,11 @@ namespace CosmosDBBinding.Step4
             this.configProvider = configProvider;
         }
 
-        public IAsyncCollector<T> Convert(CosmosDBAttribute attribute)
+        public string Convert(CosmosDBAttribute attribute)
         {
-            CosmosDBBindingContext context = this.configProvider.CreateContext(attribute);
-            return new CosmosDBBindingAsyncCollector<T>(context);
+            var context = this.configProvider.CreateContext(attribute);
+            // You may need to modify this depending on how you want to convert your context to a string
+            return context.FullString;
         }
     }
 }

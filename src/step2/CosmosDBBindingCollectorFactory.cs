@@ -6,22 +6,25 @@ namespace CosmosDBBinding.Step2
 {
     public class CosmosDBBindingCollectorFactory : ICosmosDBBindingCollectorFactory
     {
-        public CosmosClient CreateClient(
-            string connectionString,
-            string currentRegion = null)
+        public string CreateClient(
+            string myName)
         {
-            if (string.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(myName))
             {
-                throw new ArgumentNullException(nameof(connectionString));
+                throw new ArgumentNullException(nameof(myName));
             }
 
-            CosmosClientBuilder clientBuilder = new CosmosClientBuilder(connectionString);
-            if (!string.IsNullOrEmpty(currentRegion))
-            {
-                clientBuilder.WithApplicationRegion(currentRegion);
-            }
+            string fullString = buildString(myName);
 
-            return clientBuilder.Build();
+            // print the full string to the console
+
+
+            return fullString;
+        }
+
+        private string buildString(string myName)
+        {
+            return $"Hello {myName}! The current time is {DateTime.Now}";
         }
     }
 }
