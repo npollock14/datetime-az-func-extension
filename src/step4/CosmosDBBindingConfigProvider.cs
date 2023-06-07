@@ -33,7 +33,10 @@ namespace CosmosDBBinding.Step4
             }
 
             var rule = context.AddBindingRule<CosmosDBAttribute>();
-            rule.BindToInput<string>(new CosmosDBBindingConverter(this));
+            // rule.BindToInput<string>(new CosmosDBBindingConverter(this));
+            rule.BindToCollector<int>(attr => new CosmosDBBindingAsyncCollector(this.CreateContext(attr), attr));
+            // rule.BindToInput<int>(new TestConverter());
+            // rule.BindToCollector<OpenType.Poco>(typeof(CosmosDBBindingConverter), this);
         }
 
         internal CosmosDBBindingContext CreateContext(CosmosDBAttribute attribute)
@@ -52,5 +55,14 @@ namespace CosmosDBBinding.Step4
             return this.cosmosBindingCollectorFactory.CreateClient(myName);
         }
 
+
+    }
+
+    internal class TestConverter : IConverter<CosmosDBAttribute, int>
+    {
+        public int Convert(CosmosDBAttribute input)
+        {
+            return input.MyName.Length;
+        }
     }
 }

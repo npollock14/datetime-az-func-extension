@@ -12,12 +12,15 @@ namespace CosmosDBBinding.Sample
         [FunctionName("CosmosDBSample")]
         public static async Task Run(
             [TimerTrigger("*/5 * * * * *")] TimerInfo myTimer,
-            [Step1.CosmosDB("Nathan")] string resultString,
+            [Step1.CosmosDB("Nathan")] IAsyncCollector<int> collector,
             ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            log.LogInformation($"Result: {resultString}");
+            await collector.AddAsync(1);
+            await collector.AddAsync(2);
+
+            log.LogInformation($"Function execution finished.");
 
         }
     }

@@ -16,7 +16,6 @@ namespace CosmosDBBinding.Step4
         public string Convert(CosmosDBAttribute attribute)
         {
             var context = this.configProvider.CreateContext(attribute);
-            // You may need to modify this depending on how you want to convert your context to a string
             return context.FullString;
         }
     }
